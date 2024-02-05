@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev": "concurrently \"npm run watch-css\" \"cd ../Backend && uvicorn main:app --reload\"",
+    "build-css": "postcss --config tailwindcss/postcss.config.js tailwindcss/styles/styles.css -o static/css/app.css",
+    "watch-css": "postcss --config tailwindcss/postcss.config.js tailwindcss/styles/styles.css -o static/css/app.css --watch",
+    "watch-tailwind": "tailwindcss --config tailwindcss/tailwind.config.js -i tailwindcss/styles/styles.css -o static/css/app.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.17",
+    "daisyui": "^4.6.1",
+    "htmx.org": "^1.9.10",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "postcss": "^8.4.33"
+  }
+}

@@ -1,0 +1,7 @@
+FastAPI
+Pandas
+Numpy
+plotly
+Jinja2
+uvicorn
+httpx
