@@ -12,7 +12,15 @@
   </head>
   <body>
     <div class="navbar bg-base-200">
-      <a class="btn btn-ghost text-xl">yourmom</a>
+      <a class="btn btn-ghost text-xl">Youtube History Metrics</a>
     </div>
+    <div class="flex flex-col items-center mt-5">
+      <form method="POST" action="uploadFile/"
+      enctype="multipart/form-data">
+        <input type="file" name='file_input' class="file-input file-input-bordered w-full max-w-xs"/>
+
+        <button type="submit" class="btn btn-success"> Submit </button>
+      </form>
+  </div>
   </body>
 </html>
