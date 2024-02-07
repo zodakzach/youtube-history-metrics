@@ -11,7 +11,7 @@ templates=Jinja2Templates(directory="../Frontend/templates")
 
 @app.get("/")
 async def index(request:Request):
-    return templates.TemplateResponse("base.html",{"request":request})
+    return templates.TemplateResponse("index.html",{"request":request})
 
 @app.post("/uploadFile")
 async def upload_file(file_input: UploadFile):
