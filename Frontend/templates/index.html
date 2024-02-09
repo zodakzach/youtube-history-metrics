@@ -3,99 +3,39 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-  <div class="mt-12 flex flex-col items-center justify-center">
-    <article class="prose mx-2 mb-5 text-center text-3xl">
+  <div
+    class="flex h-[calc(100vh-4rem)] flex-col items-center justify-center"
+    id="contents-div"
+  >
+    <article class="prose mb-10 text-center text-5xl">
       Select Your Youtube Watch History JSON File
     </article>
-    <form method="POST" action="/uploadFile/" enctype="multipart/form-data">
+    <form
+      name="file_form"
+      hx-post="/uploadFile/"
+      hx-target="#steps"
+      hx-trigger="submit"
+      hx-swap="outerHTML"
+      hx-encoding="multipart/form-data"
+    >
       <input
         type="file"
+        id="file-form"
         name="file_input"
         class="file-input file-input-bordered w-full max-w-xs"
         accept=".json"
       />
       <button type="submit" class="btn btn-success">Load Data</button>
     </form>
-    <p class="prose mt-3 text-center">
+    <p class="prose mt-5 text-center">
       If you don't have your watch history JSON file, you can
       <a href="/instructions">click here</a> to learn how to download it.
     </p>
 
-    <ul class="steps mt-5">
-      <li class="step step-success">Verifying</li>
-      <li class="step step-success">Extracting</li>
-      <li class="step step-success">Requesting Video Data</li>
-      <li class="step step-success">Data Loaded</li>
+    <ul class="steps mt-12 text-xl" id="steps">
+      <li class="step mx-10">Verifying & Extracting</li>
+      <li class="step ">Requesting Video Data</li>
+      <li class="step ">Data Loaded</li>
     </ul>
-
-    <div class="stats mt-5 shadow">
-      <div class="stat">
-        <div class="stat-figure text-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-8 w-8 stroke-primary"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-        </div>
-        <div class="stat-title">Total Videos</div>
-        <div class="stat-value">31K</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-figure text-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-8 w-8 stroke-primary"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-            ></path>
-          </svg>
-        </div>
-        <div class="stat-title">Unique Channels</div>
-        <div class="stat-value">4,200</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-figure text-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-8 w-8 stroke-primary"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-            ></path>
-          </svg>
-        </div>
-        <div class="stat-title">Total Watch Time</div>
-        <div class="stat-value">12 days 15 hrs</div>
-        <div class="stat-desc">Jan 1, 2022 - Feb 1, 2024</div>
-      </div>
-    </div>
-
-    <div role="tablist" class="tabs tabs-bordered mt-10">
-      <a role="tab" class="tab">Top Videos</a>
-      <a role="tab" class="tab tab-active">Top Channels</a>
-      <a role="tab" class="tab">TimeLine</a>
-      <a role="tab" class="tab">Watch Times</a>
-    </div>
   </div>
 {% endblock %}

@@ -1,0 +1,9 @@
+<ul class="steps mt-12 text-xl">
+    <li class="step step-success mx-10">Verifying & Extracting</li>
+    {% if error %}
+    <li class="step step-error">Requesting Video Data</li>
+    {% else %}
+    <li class="step step-success">Requesting Video Data</li>
+    {% endif %}
+    <li class="step ">Data Loaded</li>
+  </ul>
