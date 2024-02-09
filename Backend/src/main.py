@@ -48,11 +48,19 @@ async def upload_file(file_input: UploadFile, request: Request):
         filtered_data = []
         removed_videos_count = 0
 
-        for item in filtered_data:
+        for item in watched_items:
             if item.time is not None and item.titleUrl is not None:
                 # Process the data only if both 'time' and 'titleUrl' are not None
                 watch_date = data_processing.parse_timestamp(item.time)
                 video_id = data_processing.extract_video_id(item.titleUrl)
+
+                try:
+                    # Attempt to convert video_id to string
+                    video_id_str = str(video_id)
+                except Exception as e:
+                    # Skip processing this item if conversion fails
+                    print(f"Error converting video_id to string: {e}")
+                    continue
 
                 # Check if the video is removed
                 if item.title == "Watched a video that has been removed":
@@ -61,10 +69,10 @@ async def upload_file(file_input: UploadFile, request: Request):
                 youtube_video = models.YouTubeVideo(
                     titleUrl=item.titleUrl,
                     watchDate=watch_date,
-                    id=video_id
+                    id=video_id_str
                 )
-
                 filtered_data.append(youtube_video)
+
         context['youtube_videos'] = filtered_data
         context['removed_videos_count'] = removed_videos_count
     except Exception as e:
@@ -72,7 +80,6 @@ async def upload_file(file_input: UploadFile, request: Request):
         context['error'] = f"Error parsing JSON data: {e}"
 
     context["request"] = request
-    print(context)
     return templates.TemplateResponse("partials/steps/verify_and_extract.html", context=context)
 
 

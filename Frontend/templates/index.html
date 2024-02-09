@@ -11,6 +11,7 @@
       Select Your Youtube Watch History JSON File
     </article>
     <form
+      id="file-form"
       name="file_form"
       hx-post="/uploadFile/"
       hx-target="#steps"
@@ -31,6 +32,11 @@
       If you don't have your watch history JSON file, you can
       <a href="/instructions">click here</a> to learn how to download it.
     </p>
+
+    <span
+      id="loading-spinner"
+      class="loading loading-spinner loading-lg mt-10 hidden"
+    ></span>
 
     <ul class="steps mt-12 text-xl" id="steps">
       <li class="step mx-10">Verifying & Extracting</li>
