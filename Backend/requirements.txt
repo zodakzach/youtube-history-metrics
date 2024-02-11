@@ -6,3 +6,4 @@ Jinja2
 uvicorn
 httpx
 python-multipart
+python-dotenv

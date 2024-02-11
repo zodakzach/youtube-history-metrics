@@ -1,13 +1,13 @@
 import json
 from fastapi import FastAPI, Request, UploadFile
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 from . import models
 from . import data_processing
-from datetime import datetime
-
+from . import api_handling
+from urllib.parse import unquote
 
 app=FastAPI()
 
@@ -45,33 +45,7 @@ async def upload_file(file_input: UploadFile, request: Request):
                 # Handle validation errors
                 print("Validation error:", e)
 
-        filtered_data = []
-        removed_videos_count = 0
-
-        for item in watched_items:
-            if item.time is not None and item.titleUrl is not None:
-                # Process the data only if both 'time' and 'titleUrl' are not None
-                watch_date = data_processing.parse_timestamp(item.time)
-                video_id = data_processing.extract_video_id(item.titleUrl)
-
-                try:
-                    # Attempt to convert video_id to string
-                    video_id_str = str(video_id)
-                except Exception as e:
-                    # Skip processing this item if conversion fails
-                    print(f"Error converting video_id to string: {e}")
-                    continue
-
-                # Check if the video is removed
-                if item.title == "Watched a video that has been removed":
-                    removed_videos_count += 1
-
-                youtube_video = models.YouTubeVideo(
-                    titleUrl=item.titleUrl,
-                    watchDate=watch_date,
-                    id=video_id_str
-                )
-                filtered_data.append(youtube_video)
+        filtered_data, removed_videos_count = data_processing.filter_data(watched_items)
 
         context['youtube_videos'] = filtered_data
         context['removed_videos_count'] = removed_videos_count
@@ -86,3 +60,23 @@ async def upload_file(file_input: UploadFile, request: Request):
 @app.get("/instructions", response_class=HTMLResponse)
 async def instructions(request: Request):
     return templates.TemplateResponse("instructions.html", {"request":request})
+
+
+@app.post("/requestData")
+async def requestData(request: Request):
+    context = {}
+    data = await request.body()
+    decoded_data = unquote(data.decode("utf-8"))
+
+    videos = data_processing.parse_data(decoded_data)
+
+    vid_info_df = await api_handling.request_data(videos)
+
+    complete_data = data_processing.merge_data(vid_info_df=vid_info_df, videos=videos)
+
+    context["request"] = request
+    context["complete_data"] = complete_data
+    return templates.TemplateResponse("partials/steps/request_data.html", context=context)
+
+
+    

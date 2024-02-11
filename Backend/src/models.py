@@ -38,11 +38,18 @@ class WatchedItem(BaseModel):
         }
 
 class YouTubeVideo(BaseModel):
-    titleUrl: str
-    watchDate: datetime 
+    watchDate: str 
     id: str
+    pk: int
 
     @classmethod
     def model_validate(cls, v):
         v['watchDate'] = v['watchDate'].isoformat()
         return super().model_validate(v)
+    
+    def to_dict(self):
+        return {
+            "watchDate": self.watchDate,
+            "id": self.id,
+            "pk": self.pk
+        }

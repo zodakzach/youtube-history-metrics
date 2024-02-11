@@ -11,17 +11,18 @@
       Select Your Youtube Watch History JSON File
     </article>
     <form
-      id="file-form"
+      id="file_form"
       name="file_form"
       hx-post="/uploadFile/"
       hx-target="#steps"
       hx-trigger="submit"
       hx-swap="outerHTML"
       hx-encoding="multipart/form-data"
+      hx-on::before-request="loading_spinner.classList.remove('hidden'), step_1.classList.add('step-primary')"
     >
       <input
         type="file"
-        id="file-form"
+        id="file_form"
         name="file_input"
         class="file-input file-input-bordered w-full max-w-xs"
         accept=".json"
@@ -34,14 +35,14 @@
     </p>
 
     <span
-      id="loading-spinner"
+      id="loading_spinner"
       class="loading loading-spinner loading-lg mt-10 hidden"
     ></span>
 
     <ul class="steps mt-12 text-xl" id="steps">
-      <li class="step mx-10">Verifying & Extracting</li>
-      <li class="step ">Requesting Video Data</li>
-      <li class="step ">Data Loaded</li>
+      <li class="step mx-10" id="step_1">Verifying & Extracting</li>
+      <li class="step " id="step_2">Requesting Video Data</li>
+      <li class="step " id="step_3">Data Loaded</li>
     </ul>
   </div>
 {% endblock %}
