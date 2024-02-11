@@ -1,0 +1,17 @@
+{% if error %}
+  <ul
+    class="steps mt-12 text-xl"
+    id="steps"
+    hx-on::after-settle="loading_spinner.classList.add('hidden')"
+  >
+    <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
+    <li class="step step-error" id="step_2">Requesting Video Data</li>
+    <li class="step " id="step_3">Data Loaded</li>
+  </ul>
+{% else %}
+  <ul class="steps mt-12 text-xl" id="steps">
+    <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
+    <li class="step step-success" id="step_2">Requesting Video Data</li>
+    <li class="step step-primary" id="step_3">Data Loaded</li>
+  </ul>
+{% endif %}

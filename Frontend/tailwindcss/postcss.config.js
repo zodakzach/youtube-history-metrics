@@ -1,10 +1,14 @@
-// postcss.config.js
-module.exports = {
-    plugins: [
-      require('tailwindcss')('tailwindcss/tailwind.config.js'),
-      require('@tailwindcss/forms'),
-      require('@tailwindcss/typography'),
-      require('autoprefixer'),
-    ],
-  };
-  
+import tailwindcss from 'tailwindcss';
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+import autoprefixer from 'autoprefixer';
+
+export default {
+  plugins: [
+    tailwindcss('tailwindcss/tailwind.config.js'),
+    forms,
+    typography,
+    autoprefixer,
+  ],
+};
+
