@@ -23,43 +23,6 @@ def parse_timestamp(timestamp_string):
     # If none of the formats match, raise an exception or handle it accordingly
     raise ValueError("Timestamp does not match any expected format")
 
-
-def parse_data(data):
-    videos = data.split('YouTubeVideo')
-
-    # Define potential date formats to try
-    date_formats = ["%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"]
-    _videos = []
-    for video in videos:
-        # Split the string by comma to separate the data parts
-        parts = video.split(',')
-        
-        # Initialize variables to store watchDate and id
-        watch_date = None
-        video_id = None
-        
-        # Iterate over data parts
-        for part in parts:
-            # Check if the part contains 'watchDate' or 'id' and extract the value
-            if 'watchDate' in part:
-                watch_date_str = part.split('=')[1].strip().strip("'")
-            # Attempt to convert watch_date_str to datetime object using different formats
-                for date_format in date_formats:
-                    try:
-                        watch_date = datetime.strptime(watch_date_str, date_format)
-                        break  # Exit the loop if conversion succeeds
-                    except ValueError:
-                        pass  # If conversion fails, try the next format
-                if watch_date is None:
-                    raise ValueError("Unable to parse watchDate:", watch_date_str)
-            
-            elif 'id' in part:
-                video_id = part.split('=')[1].strip().strip("'")
-        
-        # Append a tuple of (id, watchDate) to the result list
-        _videos.append((video_id, watch_date))
-    return _videos
-
 def filter_data(watched_items):
     filtered_data = []
     removed_videos_count = 0
@@ -95,11 +58,12 @@ def filter_data(watched_items):
 
 def merge_data(videos, vid_info_df):
     # Create a pandas DataFrame
-    df = pd.DataFrame(videos, columns=["id", "watch_date"])
-    df.loc[:, 'watch_date'] = df['watch_date'].dt.strftime('%Y-%m-%dT%H:%M:%S')  # Convert datetime object to ISO format string
+    video_data = [{"id": video.id, "watch_date": video.watchDate} for video in videos]
+    df = pd.DataFrame(video_data)
+
     merged_df = pd.merge(df, vid_info_df, on="id", how="left")
     merged_df = merged_df.loc[merged_df["title"].notna() & merged_df["channelTitle"].notna() & merged_df["duration"].notna()]
     youtube_df = merged_df.reset_index(drop=True)
-    result = youtube_df.values.tolist()
 
+    result = youtube_df.values.tolist()
     return result

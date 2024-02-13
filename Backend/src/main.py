@@ -7,7 +7,6 @@ from pydantic import ValidationError
 from . import models
 from . import data_processing
 from . import api_handling
-from urllib.parse import unquote
 
 app=FastAPI()
 
@@ -16,12 +15,20 @@ app.mount("/static", StaticFiles(directory="../Frontend/static"), name="static")
 
 templates=Jinja2Templates(directory="../Frontend/templates")
 
+class DataStore:
+    def __init__(self):
+        self.filtered_json_data = []
+        self.complete_data = []
+        self.removed_video_count = 0
+
+data_store = DataStore()
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request:Request):
     context = {"request": request}
     return templates.TemplateResponse("index.html", context=context)
 
-@app.post("/uploadFile")
+@app.post("/uploadFile", response_class=HTMLResponse)
 async def upload_file(file_input: UploadFile, request: Request):
     context = {}
     data = await file_input.read()
@@ -45,10 +52,7 @@ async def upload_file(file_input: UploadFile, request: Request):
                 # Handle validation errors
                 print("Validation error:", e)
 
-        filtered_data, removed_videos_count = data_processing.filter_data(watched_items)
-
-        context['youtube_videos'] = filtered_data
-        context['removed_videos_count'] = removed_videos_count
+        data_store.filtered_json_data, data_store.removed_videos_count = data_processing.filter_data(watched_items)
     except Exception as e:
         print(f"Error parsing JSON data: {e}")
         context['error'] = f"Error parsing JSON data: {e}"
@@ -62,21 +66,29 @@ async def instructions(request: Request):
     return templates.TemplateResponse("instructions.html", {"request":request})
 
 
-@app.post("/requestData")
+@app.get("/requestData", response_class=HTMLResponse)
 async def requestData(request: Request):
     context = {}
-    data = await request.body()
-    decoded_data = unquote(data.decode("utf-8"))
 
-    videos = data_processing.parse_data(decoded_data)
+    try:
+        vid_info_df = await api_handling.request_data(data_store.filtered_json_data)
+    except Exception as e:
+        print(f"Error reqesting youtube data: {e}")
+        context['error'] = f"Error reqesting youtube data: {e}"
+        return templates.TemplateResponse("partials/steps/request_data.html", context=context)
 
-    vid_info_df = await api_handling.request_data(videos)
-
-    complete_data = data_processing.merge_data(vid_info_df=vid_info_df, videos=videos)
+    data_store.complete_data = data_processing.merge_data(vid_info_df=vid_info_df, videos=data_store.filtered_json_data)
 
     context["request"] = request
-    context["complete_data"] = complete_data
+    print(len(data_store.complete_data))
     return templates.TemplateResponse("partials/steps/request_data.html", context=context)
+
+@app.get("/loadAnalytics")
+async def loadAnalytics(request: Request):
+    context = {}
+    context["request"] = request
+    return templates.TemplateResponse("partials/analytics.html", context=context)
+
 
 
     

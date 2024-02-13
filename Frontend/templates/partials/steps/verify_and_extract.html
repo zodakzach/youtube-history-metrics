@@ -12,10 +12,9 @@
   <ul
     class="steps mt-12 text-xl"
     id="steps"
-    hx-post="{{ url_for('requestData') }}"
+    hx-get="{{ url_for('requestData') }}"
     hx-swap="outerHTML"
     hx-trigger="load"
-    hx-vals='{"data": "{{ youtube_videos }}" }'
   >
     <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
     <li class="step step-primary" id="step_2">Requesting Video Data</li>

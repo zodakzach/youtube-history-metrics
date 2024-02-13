@@ -9,7 +9,16 @@
     <li class="step " id="step_3">Data Loaded</li>
   </ul>
 {% else %}
-  <ul class="steps mt-12 text-xl" id="steps">
+  <ul
+    class="steps mt-12 text-xl"
+    id="steps_complete"
+    hx-get="{{ url_for('loadAnalytics') }}"
+    hx-target="#analytics_content"
+    hx-swap="outerHTML"
+    hx-trigger="load delay:3s"
+    hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success', 3000),
+    htmx.addClass(htmx.find('#loading_spinner'), 'hidden', 3000)"
+  >
     <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
     <li class="step step-success" id="step_2">Requesting Video Data</li>
     <li class="step step-primary" id="step_3">Data Loaded</li>

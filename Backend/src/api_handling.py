@@ -91,7 +91,7 @@ async def request_data(videos):
     # Now you can access your environment variables using os.getenv()
     youtube_api_key = os.getenv("YOUTUBE_API_KEY")
 
-    vid_ids = [video_id for video_id, _ in videos]
+    vid_ids = [video.id for video in videos]
 
     vid_info_df = await process_vid_info_df(
             get_vid_id_chunks(50, vid_ids),
