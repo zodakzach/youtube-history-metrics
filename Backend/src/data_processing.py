@@ -12,7 +12,7 @@ def extract_video_id(titleUrl: str) -> Optional[str]:
     return None
 
 def parse_timestamp(timestamp_string):
-    formats_to_try = ["%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ"]
+    formats_to_try = ["%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"]
     
     for format_str in formats_to_try:
         try:
@@ -65,5 +65,6 @@ def merge_data(videos, vid_info_df):
     merged_df = merged_df.loc[merged_df["title"].notna() & merged_df["channelTitle"].notna() & merged_df["duration"].notna()]
     youtube_df = merged_df.reset_index(drop=True)
 
-    result = youtube_df.values.tolist()
-    return result
+    return youtube_df
+
+

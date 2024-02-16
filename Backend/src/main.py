@@ -4,9 +4,12 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
+import pandas as pd
 from . import models
 from . import data_processing
 from . import api_handling
+from . import analytics
+from . import visualization
 
 app=FastAPI()
 
@@ -18,7 +21,7 @@ templates=Jinja2Templates(directory="../Frontend/templates")
 class DataStore:
     def __init__(self):
         self.filtered_json_data = []
-        self.complete_data = []
+        self.complete_data = pd.DataFrame()
         self.removed_video_count = 0
 
 data_store = DataStore()
@@ -80,15 +83,22 @@ async def requestData(request: Request):
     data_store.complete_data = data_processing.merge_data(vid_info_df=vid_info_df, videos=data_store.filtered_json_data)
 
     context["request"] = request
-    print(len(data_store.complete_data))
     return templates.TemplateResponse("partials/steps/request_data.html", context=context)
 
 @app.get("/loadAnalytics")
 async def loadAnalytics(request: Request):
     context = {}
     context["request"] = request
-    return templates.TemplateResponse("partials/analytics.html", context=context)
 
+    context["total_vids"] = data_store.complete_data.shape[0]
+    context["unique_vids"] = data_store.complete_data[["title", "channelTitle"]].drop_duplicates().to_records(index=False).tolist()
+    context["total_unique_channels"] = analytics.unique_channels(data_store.complete_data)
+    context["time_series_line_chart"] = visualization.plot_time_series_line_chart(data_store.complete_data).to_html(full_html=False)
+    context["top_videos_chart"] = visualization.plot_top_videos_chart(data_store.complete_data).to_html(full_html=False)
+    context["top_channels_chart"] = visualization.plot_top_channels_chart(data_store.complete_data).to_html(full_html=False)
+    context["heatmap"] = visualization.plot_heatmap(data_store.complete_data).to_html(full_html=False)
 
+    # Calculates the total number of days, hours, and minutes watched
+    updated_context = analytics.calculate_total_watch_time(data_store.complete_data["duration"].tolist(), context)
 
-    
+    return templates.TemplateResponse("partials/analytics.html", context=updated_context)

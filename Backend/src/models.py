@@ -1,6 +1,5 @@
 from pydantic import BaseModel, ValidationError
 from typing import List, Optional
-from datetime import datetime
 
 class Detail(BaseModel):
     name: str
