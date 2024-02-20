@@ -4,26 +4,52 @@
 >
   <div class="mb-5 mt-5 flex w-3/4 justify-start text-2xl">Date Range</div>
   <div class="flex h-1/2 w-5/6 items-start">
-    <div class="rounded-box h-full w-1/2 overflow-x-auto shadow-xl">
-      <table class="table-zebra table min-h-full min-w-full">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th></th>
-            <th>Video</th>
-            <th>Channel</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for vid in unique_vids %}
+    <div class="rounded-box h-full w-1/2 shadow-xl">
+      <div class="h-5/6 w-full overflow-x-auto">
+        <table class="table-zebra table min-h-full min-w-full">
+          <!-- head -->
+          <thead>
             <tr>
-              <th>{{ loop.index }}</th>
-              <th>{{ vid[0] }}</th>
-              <th>{{ vid[1] }}</th>
+              <th></th>
+              <th>Video</th>
+              <th>Channel</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody id="table_body">
+            {% for vid in unique_vids %}
+              <tr>
+                <th>{{ loop.index + start_index }}</th>
+                <th>{{ vid[0] }}</th>
+                <th>{{ vid[1] }}</th>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="join flex h-1/6 items-center justify-center">
+        <button
+          id="prev_button"
+          class="join-item btn"
+          disabled = 'disabled'
+          hx-get="{{ url_for('prevTablePage') }}"
+          hx-target="#table_body"
+          hx-swap="outerHTML"
+          onclick="decrementPage()"
+        >
+          «
+        </button>
+        <button id="page_num" class="join-item btn">Page 1 of {{num_of_pages}}</button>
+        <button
+          id="next_button"
+          class="join-item btn"
+          hx-get="{{ url_for('nextTablePage') }}"
+          hx-target="#table_body"
+          hx-swap="outerHTML"
+          onclick="incrementPage()"
+        >
+          »
+        </button>
+      </div>
     </div>
     <div class="card ml-10 h-full w-1/2 shadow-xl">
       <div class="stats shadow">
@@ -75,3 +101,42 @@
     </div>
   </div>
 </div>
+<script>
+  var currentPage = 1; 
+
+  function incrementPage() {
+    if (currentPage + 1 <= '{{num_of_pages}}'){
+        currentPage++;
+        updatePageButton();
+
+        if (currentPage == '{{num_of_pages}}')
+        {
+          document.getElementById("next_button").disabled = true;
+          document.getElementById("prev_button").disabled = false;
+        }
+        else if (currentPage > 1){
+          document.getElementById("prev_button").disabled = false;
+        }
+    }
+  }
+
+  function decrementPage() {
+    if (currentPage - 1 > 0){
+      currentPage--;
+      updatePageButton();
+      if (currentPage == 1)
+      {
+        document.getElementById("prev_button").disabled = true;
+        document.getElementById("next_button").disabled = false;
+      }
+      else if (currentPage < '{{num_of_pages}}'){
+        document.getElementById("next_button").disabled = false;
+      }
+  }
+
+  }
+
+  function updatePageButton() {
+      document.getElementById('page_num').innerText = 'Page ' + currentPage + ' of {{num_of_pages}}';
+  }
+</script>

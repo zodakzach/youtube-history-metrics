@@ -15,7 +15,7 @@
     hx-get="{{ url_for('loadAnalytics') }}"
     hx-target="#contents_div"
     hx-swap="outerHTML"
-    hx-trigger="load delay:3s"
+    hx-trigger="load"
     hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success', 3000),
     htmx.addClass(htmx.find('#loading_spinner'), 'hidden', 3000)"
   >

@@ -60,7 +60,7 @@ def plot_top_videos_chart(youtube_df):
         height=200,  # Set the height of the figure (in pixels)
         xaxis_title="",  # Set the title for the x-axis
         yaxis_title="",  # Set the title for the y-axis
-        margin=dict(l=5, r=20, t=20, b=10)  # Adjust margins (left, right, top, bottom) around the plot area
+        margin=dict(l=5, r=10, t=10, b=10)  # Adjust margins (left, right, top, bottom) around the plot area
 
     )
 
@@ -97,7 +97,7 @@ def plot_top_channels_chart(youtube_df):
         height=150,  # Set the height of the figure (in pixels)
         xaxis_title="",  # Set the title for the x-axis
         yaxis_title="",  # Set the title for the y-axis
-        margin=dict(l=5, r=20, t=20, b=10)  # Adjust margins (left, right, top, bottom) around the plot area
+        margin=dict(l=5, r=10, t=10, b=10)  # Adjust margins (left, right, top, bottom) around the plot area
 
     )
 
@@ -130,7 +130,7 @@ def plot_heatmap(youtube_df,  date_column="watch_date"):
         height=150,  # Set the height of the figure (in pixels)
         xaxis_title="Hour of Day",  # Set the title for the x-axis
         yaxis_title="Day of Week",  # Set the title for the y-axis
-        margin=dict(l=5, r=20, t=20, b=10),  # Adjust margins (left, right, top, bottom) around the plot area
+        margin=dict(l=10, r=10, t=20, b=10),  # Adjust margins (left, right, top, bottom) around the plot area
         coloraxis_colorbar=dict(title="Video Count")
     )
 

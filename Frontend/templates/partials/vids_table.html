@@ -1,0 +1,9 @@
+<tbody id="table_body">
+    {% for vid in unique_vids %}
+      <tr>
+        <th>{{ loop.index + start_index }}</th>
+        <th>{{ vid[0] }}</th>
+        <th>{{ vid[1] }}</th>
+      </tr>
+    {% endfor %}
+</tbody>

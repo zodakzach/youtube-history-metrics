@@ -23,6 +23,9 @@ class DataStore:
         self.filtered_json_data = []
         self.complete_data = pd.DataFrame()
         self.removed_video_count = 0
+        self.page_num = 1
+        self.unique_vids = []
+        self.num_of_pages = 0
 
 data_store = DataStore()
 
@@ -74,7 +77,7 @@ async def requestData(request: Request):
     context = {}
 
     try:
-        vid_info_df = await api_handling.request_data(data_store.filtered_json_data)
+        vid_info_df = await api_handling.request_data(data_store.filtered_json_data[:2000])
     except Exception as e:
         print(f"Error reqesting youtube data: {e}")
         context['error'] = f"Error reqesting youtube data: {e}"
@@ -90,8 +93,19 @@ async def loadAnalytics(request: Request):
     context = {}
     context["request"] = request
 
+    data_store.page_num = 1
+
+    data_store.unique_vids = data_store.complete_data[["title", "channelTitle"]].drop_duplicates().to_records(index=False).tolist()
+    data_store.num_of_pages = (len(data_store.unique_vids) + 500 - 1) // 500
+    max_index = min(len(data_store.unique_vids) - 1, 500 * data_store.page_num)
+    index = max_index if max_index >= 0 else 0
+
+    context["start_index"] = 0
+
+
     context["total_vids"] = data_store.complete_data.shape[0]
-    context["unique_vids"] = data_store.complete_data[["title", "channelTitle"]].drop_duplicates().to_records(index=False).tolist()
+    context["num_of_pages"] = data_store.num_of_pages
+    context["unique_vids"] = data_store.unique_vids[:index]
     context["total_unique_channels"] = analytics.unique_channels(data_store.complete_data)
     context["time_series_line_chart"] = visualization.plot_time_series_line_chart(data_store.complete_data).to_html(full_html=False)
     context["top_videos_chart"] = visualization.plot_top_videos_chart(data_store.complete_data).to_html(full_html=False)
@@ -102,3 +116,39 @@ async def loadAnalytics(request: Request):
     updated_context = analytics.calculate_total_watch_time(data_store.complete_data["duration"].tolist(), context)
 
     return templates.TemplateResponse("partials/analytics.html", context=updated_context)
+
+
+@app.get("/nextTablePage")
+async def nextTablePage(request: Request):
+    context = {"request": request}
+    if( data_store.page_num < data_store.num_of_pages):
+        data_store.page_num +=1
+
+    max_index = min(len(data_store.unique_vids) - 1, 500 * data_store.page_num)
+    end_index = max_index if max_index >= 0 else 0
+    
+    # Calculate the start index for the next page
+    start_index = end_index - 500 if end_index > 0 else 0
+
+    context["start_index"] = start_index
+    context["unique_vids"] = data_store.unique_vids[start_index:end_index]
+
+    return templates.TemplateResponse("partials/vids_table.html", context=context)
+
+
+@app.get("/prevTablePage")
+async def prevTablePage(request: Request):
+    context = {"request": request}
+    if(data_store.page_num > 1):
+        data_store.page_num -= 1
+        start_index = 500 * (data_store.page_num - 1)
+    else:
+        start_index = 0
+
+    # Calculate the end index for the previous page
+    end_index = start_index + 500
+    
+    context["start_index"] = start_index
+    context["unique_vids"] = data_store.unique_vids[start_index:end_index]
+
+    return templates.TemplateResponse("partials/vids_table.html", context=context)
