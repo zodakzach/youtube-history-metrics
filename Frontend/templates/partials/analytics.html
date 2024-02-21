@@ -2,7 +2,7 @@
   class="flex h-[calc(100vh-4rem)] flex-col items-center overflow-hidden"
   id="contents_div"
 >
-  <div class="mb-5 mt-5 flex w-3/4 justify-start text-2xl">Date Range</div>
+  <div class="mb-5 mt-5 flex w-3/4 justify-start text-2xl"></div>
   <div class="flex h-1/2 w-5/6 items-start">
     <div class="rounded-box h-full w-1/2 shadow-xl">
       <div class="h-5/6 w-full overflow-x-auto">
@@ -30,7 +30,7 @@
         <button
           id="prev_button"
           class="join-item btn"
-          disabled = 'disabled'
+          disabled="disabled"
           hx-get="{{ url_for('prevTablePage') }}"
           hx-target="#table_body"
           hx-swap="outerHTML"
@@ -38,7 +38,9 @@
         >
           «
         </button>
-        <button id="page_num" class="join-item btn">Page 1 of {{num_of_pages}}</button>
+        <button id="page_num" class="join-item btn">
+          Page 1 of {{ num_of_pages }}
+        </button>
         <button
           id="next_button"
           class="join-item btn"
@@ -102,41 +104,37 @@
   </div>
 </div>
 <script>
-  var currentPage = 1; 
+  var currentPage = 1;
 
   function incrementPage() {
-    if (currentPage + 1 <= '{{num_of_pages}}'){
-        currentPage++;
-        updatePageButton();
+    if (currentPage + 1 <= "{{num_of_pages}}") {
+      currentPage++;
+      updatePageButton();
 
-        if (currentPage == '{{num_of_pages}}')
-        {
-          document.getElementById("next_button").disabled = true;
-          document.getElementById("prev_button").disabled = false;
-        }
-        else if (currentPage > 1){
-          document.getElementById("prev_button").disabled = false;
-        }
+      if (currentPage == "{{num_of_pages}}") {
+        document.getElementById("next_button").disabled = true;
+        document.getElementById("prev_button").disabled = false;
+      } else if (currentPage > 1) {
+        document.getElementById("prev_button").disabled = false;
+      }
     }
   }
 
   function decrementPage() {
-    if (currentPage - 1 > 0){
+    if (currentPage - 1 > 0) {
       currentPage--;
       updatePageButton();
-      if (currentPage == 1)
-      {
+      if (currentPage == 1) {
         document.getElementById("prev_button").disabled = true;
         document.getElementById("next_button").disabled = false;
-      }
-      else if (currentPage < '{{num_of_pages}}'){
+      } else if (currentPage < "{{num_of_pages}}") {
         document.getElementById("next_button").disabled = false;
       }
-  }
-
+    }
   }
 
   function updatePageButton() {
-      document.getElementById('page_num').innerText = 'Page ' + currentPage + ' of {{num_of_pages}}';
+    document.getElementById("page_num").innerText =
+      "Page " + currentPage + " of {{num_of_pages}}";
   }
 </script>

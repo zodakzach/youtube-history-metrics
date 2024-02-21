@@ -57,7 +57,6 @@ def filter_data(watched_items):
     return filtered_data, removed_videos_count
 
 def merge_data(videos, vid_info_df):
-    # Create a pandas DataFrame
     video_data = [{"id": video.id, "watch_date": video.watchDate} for video in videos]
     df = pd.DataFrame(video_data)
 

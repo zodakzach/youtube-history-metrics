@@ -31,20 +31,21 @@ def plot_time_series_line_chart(youtube_df):
     return fig
 
 def plot_top_videos_chart(youtube_df):
-    # Group by title and count the number of times each title appears
-    df_grouped = youtube_df.groupby("title").size().reset_index(name="count")
+    # Count the number of times each title appears
+    title_counts = youtube_df['title'].value_counts()
 
-    # Sort the DataFrame by count in descending order to plot the top videos
-    df_grouped = df_grouped.sort_values(by="count", ascending=False)
+    # Sort the titles by count in descending order to plot the top videos
+    title_counts = title_counts.sort_values(ascending=False)
 
     # Take only the top 10 titles
-    df_top_10 = df_grouped.head(10)
+    top_titles = title_counts.head(10)
 
-    # Calculate cumulative sum of the count for each title
-    df_top_10['cumulative_count'] = df_top_10['count'].cumsum()
+    # Create a DataFrame from top_titles series
+    top_titles_df = top_titles.reset_index()
+    top_titles_df.columns = ['title', 'count']
 
     # Plot the bar chart
-    fig = px.bar(df_top_10, x="title", y="cumulative_count")
+    fig = px.bar(top_titles_df, x="title", y="count")
 
         # Hide the x-axis labels
     fig.update_layout(
@@ -69,19 +70,19 @@ def plot_top_videos_chart(youtube_df):
 
 def plot_top_channels_chart(youtube_df):
     # Group by title and count the number of times each title appears
-    df_grouped = youtube_df.groupby("channelTitle").size().reset_index(name="count")
+    counts = youtube_df["channelTitle"].value_counts()
 
     # Sort the DataFrame by count in descending order to plot the top videos
-    df_grouped = df_grouped.sort_values(by="count", ascending=False)
+    counts = counts.sort_values(ascending=False)
 
     # Take only the top 10 titles
-    df_top_10 = df_grouped.head(10)
+    df_top_10 = counts.head(10)
 
-    # Calculate cumulative sum of the count for each title
-    df_top_10['cumulative_count'] = df_top_10['count'].cumsum()
-
+    # Create a DataFrame from top_titles series
+    top_titles_df = df_top_10.reset_index()
+    top_titles_df.columns = ['channelTitle', 'count']
     # Plot the bar chart
-    fig = px.bar(df_top_10, x="channelTitle", y="cumulative_count")
+    fig = px.bar(top_titles_df, x="channelTitle", y="count")
 
     # Hide the x-axis labels
     fig.update_layout(

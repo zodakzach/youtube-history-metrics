@@ -75,9 +75,10 @@ async def instructions(request: Request):
 @app.get("/requestData", response_class=HTMLResponse)
 async def requestData(request: Request):
     context = {}
+    context["request"] = request
 
     try:
-        vid_info_df = await api_handling.request_data(data_store.filtered_json_data[:2000])
+        vid_info_df = await api_handling.request_data(data_store.filtered_json_data)
     except Exception as e:
         print(f"Error reqesting youtube data: {e}")
         context['error'] = f"Error reqesting youtube data: {e}"
@@ -85,7 +86,6 @@ async def requestData(request: Request):
 
     data_store.complete_data = data_processing.merge_data(vid_info_df=vid_info_df, videos=data_store.filtered_json_data)
 
-    context["request"] = request
     return templates.TemplateResponse("partials/steps/request_data.html", context=context)
 
 @app.get("/loadAnalytics")
@@ -101,8 +101,6 @@ async def loadAnalytics(request: Request):
     index = max_index if max_index >= 0 else 0
 
     context["start_index"] = 0
-
-
     context["total_vids"] = data_store.complete_data.shape[0]
     context["num_of_pages"] = data_store.num_of_pages
     context["unique_vids"] = data_store.unique_vids[:index]
