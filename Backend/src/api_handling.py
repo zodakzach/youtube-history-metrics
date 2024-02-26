@@ -28,19 +28,15 @@ async def fetch_video_data(youtube_api_key, video_id_string):
         response.raise_for_status()
         data = response.json()["items"]
 
-        extracted_data = []
-        for item in data:
-            snippet = item.get("snippet", {})
-            content_details = item.get("contentDetails", {})
-
-            video_info = {
+        extracted_data = [
+            {
                 "id": item.get("id", ""),
-                "title": snippet.get("title", ""),
-                "channelTitle": snippet.get("channelTitle", ""),
-                "duration": content_details.get("duration", ""),
+                "title": item.get("snippet", {}).get("title", ""),
+                "channelTitle": item.get("snippet", {}).get("channelTitle", ""),
+                "duration": item.get("contentDetails", {}).get("duration", ""),
             }
-
-            extracted_data.append(video_info)
+            for item in data
+        ]
 
         return extracted_data
 
