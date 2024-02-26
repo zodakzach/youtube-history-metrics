@@ -5,22 +5,16 @@ import pandas as pd
 
 def plot_time_series_line_chart(youtube_df):
     # Convert "watch_date" column to datetime format with multiple potential formats
-    youtube_df["watch_date"] = youtube_df["watch_date"].apply(
-        data_processing.parse_timestamp
-    )
+    youtube_df["watch_date"] = youtube_df["watch_date"].apply(data_processing.parse_timestamp)
 
-    # Group by watch date and count the number of videos watched on each date
-    df_grouped = (
-        youtube_df.groupby(youtube_df["watch_date"].dt.date)
-        .size()
-        .reset_index(name="count")
-    )
+    # Sort the DataFrame by watch date
+    youtube_df = youtube_df.sort_values(by="watch_date")
 
-    # Calculate cumulative sum of the count
-    df_grouped["cumulative_count"] = df_grouped["count"].cumsum()
+    # Reset the index after sorting
+    youtube_df = youtube_df.reset_index(drop=True)
 
-    # Plot the time series line chart
-    fig = px.line(df_grouped, x="watch_date", y="cumulative_count")
+    # Plot the time series line chart with hover data including the "title" column
+    fig = px.line(youtube_df, x="watch_date", y=youtube_df.index+1, hover_data={"watch_date": True, "title": True})
 
     # Adjust the layout to make the figure smaller
     fig.update_layout(
