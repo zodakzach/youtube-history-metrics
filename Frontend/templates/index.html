@@ -13,7 +13,7 @@
     <form
       id="file_form"
       name="file_form"
-      hx-post="/uploadFile/"
+      hx-post="{{ url_for('upload_file') }}"
       hx-target="#steps"
       hx-trigger="submit"
       hx-swap="outerHTML"

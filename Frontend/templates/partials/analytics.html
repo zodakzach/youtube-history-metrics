@@ -31,10 +31,10 @@
           id="prev_button"
           class="join-item btn"
           disabled="disabled"
-          hx-get="{{ url_for('prevTablePage') }}"
+          hx-get="{{ url_for('prev_table_page') }}"
           hx-target="#table_body"
           hx-swap="outerHTML"
-          onclick="decrementPage()"
+          hx-on::after-request="decrementPage()"
         >
           «
         </button>
@@ -44,10 +44,10 @@
         <button
           id="next_button"
           class="join-item btn"
-          hx-get="{{ url_for('nextTablePage') }}"
+          hx-get="{{ url_for('next_table_page') }}"
           hx-target="#table_body"
           hx-swap="outerHTML"
-          onclick="incrementPage()"
+          hx-on::after-request="incrementPage()"
         >
           »
         </button>
@@ -56,15 +56,15 @@
     <div class="card ml-10 h-full w-1/2 shadow-xl">
       <div class="stats shadow">
         <div class="stat overflow-hidden">
-          <div class="stat-title">Total Videos Watched</div>
-          <div class="stat-value">{{ total_vids }}</div>
+          <div class="stat-title">Total Time Watched</div>
+          <div class="stat-value text-xl">
+            {{ total_days }} Days {{ total_hours }} Hours {{ total_mins }} Mins
+          </div>
         </div>
       </div>
-      <div class="h-3/4 overflow-hidden">
-        {{ time_series_line_chart | safe }}
-      </div>
+      <div class="h-3/4 overflow-hidden">{{ heatmap | safe }}</div>
       <div class="card-body">
-        <h2 class="card-title">Time Series Line Chart</h2>
+        <h2 class="card-title">Watch Times</h2>
       </div>
     </div>
   </div>
@@ -72,15 +72,15 @@
     <div class="card h-4/5 w-1/3 shadow-xl">
       <div class="stats shadow">
         <div class="stat overflow-hidden">
-          <div class="stat-title text-sm">Total Time Watched</div>
-          <div class="stat-value text-base">
-            {{ total_days }} Days {{ total_hours }} Hours {{ total_mins }} Mins
-          </div>
+          <div class="stat-title text-sm">Total Videos Watched</div>
+          <div class="stat-value text-base">{{ total_vids }}</div>
         </div>
       </div>
-      <div class="h-3/5 overflow-hidden">{{ heatmap | safe }}</div>
+      <div class="h-3/5 overflow-hidden">
+        {{ time_series_line_chart | safe }}
+      </div>
       <div class="card-body">
-        <h2 class="card-title">Watch Times</h2>
+        <h2 class="card-title">Time Series Line Chart</h2>
       </div>
     </div>
     <div class="card ml-10 h-4/5 w-1/3 shadow-xl">

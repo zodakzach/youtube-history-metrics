@@ -12,6 +12,7 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 
+
 async def fetch_video_data(youtube_api_key, video_id_string):
     """
     Fetch video data from YouTube API.
@@ -74,6 +75,7 @@ async def process_vid_info_df(vid_id_chunks, youtube_api):
 
     return vid_info_df
 
+
 def get_vid_id_chunks(chunk_size, vid_ids):
     """Function to split a list of unique video IDs into chunks of size chunk"""
     unique_vid_ids = list(set(vid_ids))
@@ -83,8 +85,8 @@ def get_vid_id_chunks(chunk_size, vid_ids):
         for i in range(0, len(unique_vid_ids), chunk_size)
     ]
 
-async def request_data(videos):
 
+async def request_data(videos):
     # Load environment variables from .env file
     load_dotenv()
 
@@ -94,8 +96,8 @@ async def request_data(videos):
     vid_ids = [video.id for video in videos]
 
     vid_info_df = await process_vid_info_df(
-            get_vid_id_chunks(50, vid_ids),
-            youtube_api_key,
-        )
+        get_vid_id_chunks(50, vid_ids),
+        youtube_api_key,
+    )
 
     return vid_info_df

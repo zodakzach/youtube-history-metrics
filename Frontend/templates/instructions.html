@@ -3,4 +3,62 @@
 {% block title %}How To Download{% endblock %}
 
 {% block content %}
+  <div class="flex h-full flex-col items-center" id="contents_div">
+    <h1 class="prose mt-10 text-2xl font-bold">
+      How To Download Your YouTube Watch History?
+    </h1>
+    <span class="prose prose-xl mt-10 w-4/5 font-bold"
+      >Step 1: Navigate to
+      <a href="https://takeout.google.com" target="_blank">takeout.google.com</a
+      >.
+    </span>
+    <div class="mockup-browser bg-base-300 mt-10 border">
+      <div class="mockup-browser-toolbar w-full">
+        <div class="input w-full ">https://takeout.google.com</div>
+      </div>
+      <div class="bg-base-200 flex justify-center px-4 py-16">Hello!</div>
+    </div>
+    <span class="prose prose-xl mt-10 w-4/5 font-bold"
+      >Step 2: Select data for new export</span
+    >
+    <ol>
+      <li>
+        Log in to your Google account that is linked to your YouTube if not
+        logged in already.
+      </li>
+
+      <li>Create a new export after logging in.</li>
+      <li>
+        Deselect all items and scroll down to find the "YouTube and YouTube
+        Music" option.
+      </li>
+
+      <li>Select "YouTube and YouTube Music".</li>
+      <li>Choose "Deselect all" under content options.</li>
+
+      <li>Select the "History" option and click 'Ok'.</li>
+      <li>Change the export format from HTML to JSON.</li>
+
+      <li>Click on the format option.</li>
+      <li>Choose JSON format and click 'Ok'.</li>
+      <li>Proceed to the next step.</li>
+    </ol>
+    <span class="prose prose-xl mt-10 w-4/5 font-bold"
+      >Step 3: Create export</span
+    >
+    <ol>
+      <li>Click on the 'Create export' button.</li>
+
+      <li>
+        Wait for the export to finish. It usually takes about 5 minutes if only
+        YouTube history is selected.
+      </li>
+
+      <li>Check your email for the download link.</li>
+
+      <li>Download the data from the provided link and unzip the folder.</li>
+
+      <li>Now you can analyze your YouTube watch history data as needed.</li>
+    </ol>
+  </div>
 {% endblock %}
