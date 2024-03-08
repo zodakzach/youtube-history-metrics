@@ -3,62 +3,148 @@
 {% block title %}How To Download{% endblock %}
 
 {% block content %}
-  <div class="flex h-full flex-col items-center" id="contents_div">
-    <h1 class="prose mt-10 text-2xl font-bold">
-      How To Download Your YouTube Watch History?
-    </h1>
-    <span class="prose prose-xl mt-10 w-4/5 font-bold"
-      >Step 1: Navigate to
-      <a href="https://takeout.google.com" target="_blank">takeout.google.com</a
-      >.
-    </span>
-    <div class="mockup-browser bg-base-300 mt-10 border">
-      <div class="mockup-browser-toolbar w-full">
-        <div class="input w-full ">https://takeout.google.com</div>
-      </div>
-      <div class="bg-base-200 flex justify-center px-4 py-16">Hello!</div>
+  <div class="flex h-[calc(100vh-4rem)]" id="hero_section">
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="hero_text_container"
+    >
+      <h1 class="mb-10 w-3/4 text-5xl font-bold">
+        How To Download Your YouTube Watch History?
+      </h1>
+      <article class="prose-xl w-3/4">
+        <p>
+          To analyze your watch history you must download it as a JSON file from
+          google.
+        </p>
+        <p>Follow steps below to do so.</p>
+      </article>
     </div>
-    <span class="prose prose-xl mt-10 w-4/5 font-bold"
-      >Step 2: Select data for new export</span
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="hero_image_container"
     >
-    <ol>
-      <li>
-        Log in to your Google account that is linked to your YouTube if not
-        logged in already.
-      </li>
+      <img
+        src="{{ url_for('static',path='/images/youtube_icon.png') }}"
+        alt="YouTube Icon"
+      />
+    </div>
+  </div>
 
-      <li>Create a new export after logging in.</li>
-      <li>
-        Deselect all items and scroll down to find the "YouTube and YouTube
-        Music" option.
-      </li>
-
-      <li>Select "YouTube and YouTube Music".</li>
-      <li>Choose "Deselect all" under content options.</li>
-
-      <li>Select the "History" option and click 'Ok'.</li>
-      <li>Change the export format from HTML to JSON.</li>
-
-      <li>Click on the format option.</li>
-      <li>Choose JSON format and click 'Ok'.</li>
-      <li>Proceed to the next step.</li>
-    </ol>
-    <span class="prose prose-xl mt-10 w-4/5 font-bold"
-      >Step 3: Create export</span
+  <div class="flex h-screen" id="step1_section">
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="step1_image_container"
     >
-    <ol>
-      <li>Click on the 'Create export' button.</li>
+      <div class="mockup-browser bg-base-300 border shadow-xl">
+        <div class="mockup-browser-toolbar">
+          <div class="input">https://takeout.google.com</div>
+        </div>
+        <div class="bg-base-200 flex justify-center">
+          <img
+            src="{{ url_for('static',path='/images/Step-1.png') }}"
+            alt="Step-1 takeout.google.com website"
+            width="700"
+            height="400"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="step1_text_container"
+    >
+      <h1 class="mb-10 w-3/4 text-5xl font-bold">
+        Step 1: Navigate to
+        <a
+          href="https://takeout.google.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link"
+          >takeout.google.com</a
+        >
+      </h1>
+      <article class="prose-xl w-3/4">
+        <p>
+          This website allows you to export and download your Google data. Login
+          with your google account linked to your YouTube and create a new
+          export. However, you only need to export your YouTube watch history
+          data.
+        </p>
+        <p>
+          Step 2 will guide you through the process of selecting this specific
+          data.
+        </p>
+      </article>
+    </div>
+  </div>
 
-      <li>
-        Wait for the export to finish. It usually takes about 5 minutes if only
-        YouTube history is selected.
-      </li>
+  <div class="flex h-screen" id="step2_section">
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="step2_text_container"
+    >
+      <h1 class="mb-10 w-3/4 text-5xl font-bold">
+        Step 2: Select data for new export
+      </h1>
+      <article class="prose-xl w-3/4">
+        <ul class="ml-4 list-disc">
+          <li>Deselect all options by clicking 'Deselect all'.</li>
+          <li>
+            Then scroll down and select the 'YouTube and YouTube Music' option
+            shown to the right.
+          </li>
+          <li>
+            Click the format option and scroll down to history. Change format
+            from HTML to JSON.
+          </li>
+          <li>
+            Click the content option and deselect all options except the history
+            option.
+          </li>
+        </ul>
+        <p>Proceed to next step.</p>
+      </article>
+    </div>
+    <div class="flex h-full w-1/2 flex-col items-center justify-center id="step2_image_container">
+      <img
+      src="{{ url_for('static',path='/images/Step-2.png') }}"
+      alt="Step-2 YouTube and YouTube Music option"
+      class="rounded-box shadow-xl"
+      width="600"
+    />
+    </div>
+  </div>
 
-      <li>Check your email for the download link.</li>
-
-      <li>Download the data from the provided link and unzip the folder.</li>
-
-      <li>Now you can analyze your YouTube watch history data as needed.</li>
-    </ol>
+  <div class="flex h-screen" id="step3_section">
+    <div class="flex h-full w-1/2 flex-col items-center justify-center" id="step3_image_container">
+      <img
+      src="{{ url_for('static',path='/images/Step-3.png') }}"
+      alt="Step-3 Create export step"
+      class="rounded-box shadow-xl"
+      width="600"
+    />
+    </div>
+    <div
+      class="flex h-full w-1/2 flex-col items-center justify-center"
+      id="step3_text_container"
+    >
+      <h1 class="mb-10 w-3/4 text-5xl font-bold">
+        Step 3: Export and Download Data
+      </h1>
+      <article class="prose-xl w-3/4">
+        <ul class="ml-4 list-disc">
+          <li>
+            Now that you have selected the data, you can leave the default
+            export settings alone and click 'Create export'.
+          </li>
+          <li>
+            If you selected only the YouTube watch history data it should only
+            take about 5 minutes to receive the email with the download link.
+          </li>
+          <li>Download the takeout zip file and unzip it.</li>
+        </ul>
+        <p>You are now ready to analyze your <a href="/" class="link font-semibold">YouTube History Metrics</a>.</p>
+      </article>
+    </div>
   </div>
 {% endblock %}

@@ -5,7 +5,9 @@ import pandas as pd
 
 def plot_time_series_line_chart(youtube_df):
     # Convert "watch_date" column to datetime format with multiple potential formats
-    youtube_df["watch_date"] = youtube_df["watch_date"].apply(data_processing.parse_timestamp)
+    youtube_df["watch_date"] = youtube_df["watch_date"].apply(
+        data_processing.parse_timestamp
+    )
 
     # Sort the DataFrame by watch date
     youtube_df = youtube_df.sort_values(by="watch_date")
@@ -14,7 +16,12 @@ def plot_time_series_line_chart(youtube_df):
     youtube_df = youtube_df.reset_index(drop=True)
 
     # Plot the time series line chart with hover data including the "title" column
-    fig = px.line(youtube_df, x="watch_date", y=youtube_df.index+1, hover_data={"watch_date": True, "title": True})
+    fig = px.line(
+        youtube_df,
+        x="watch_date",
+        y=youtube_df.index + 1,
+        hover_data={"watch_date": True, "title": True},
+    )
 
     # Adjust the layout to make the figure smaller
     fig.update_layout(

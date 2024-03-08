@@ -5,7 +5,7 @@ import pandas as pd
 from src import models
 
 
-class data_processing_test(unittest.TestCase):
+class DataProcessingModuleTest(unittest.TestCase):
     def test_extract_video_id(self):
         # Test case for valid URL
         url = "https://www.youtube.com/watch?v=abc123"
