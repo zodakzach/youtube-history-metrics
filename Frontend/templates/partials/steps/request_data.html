@@ -11,13 +11,13 @@
 {% else %}
   <ul
     class="steps mt-12 text-xl"
-    id="steps_complete"
+    id="steps"
     hx-get="{{ url_for('load_analytics') }}"
     hx-target="#contents_div"
     hx-swap="outerHTML"
     hx-trigger="load"
-    hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success', 3000),
-    htmx.addClass(htmx.find('#loading_spinner'), 'hidden', 3000)"
+    hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success'),
+    htmx.addClass(htmx.find('#loading_spinner'), 'hidden')"
   >
     <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
     <li class="step step-success" id="step_2">Requesting Video Data</li>

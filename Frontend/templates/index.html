@@ -4,7 +4,7 @@
 
 {% block content %}
   <div
-    class="flex h-[calc(100vh-4rem)] flex-col items-center justify-center"
+    class="flex h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-hidden"
     id="contents_div"
   >
     <article class="prose mb-10 text-center text-5xl">
@@ -29,7 +29,7 @@
       />
       <button type="submit" class="btn btn-success">Load Data</button>
     </form>
-    <p class="prose mt-5 text-center">
+    <p class="prose mt-5 text-center" hx-boost="true">
       If you don't have your watch history JSON file, you can
       <a href="/instructions">click here</a> to learn how to download it.
     </p>
