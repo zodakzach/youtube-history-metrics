@@ -9,8 +9,51 @@ Once the analysis is complete, you'll be presented with a clear and concise dash
 Experience the simplicity and convenience of YouTube Watch History Metrics today and gain valuable insights into your YouTube viewing behavior like never before. Start exploring your watch history with YouTube Watch History Metrics now!
 
 ## Description
+
 This is a straightforward Python FastAPI web application that uses Jinja2 templates for rendering. The application utilizes HTMX to facilitate AJAX requests to the backend, enabling seamless swapping of HTML templates without full-page reloads. Styling is accomplished with Tailwind CSS, employing the DaisyUI plugin for enhanced design capabilities.
 
-## Getting Started 
+## Getting Started
 
-## 
+Follow these instructions to set up and run the project locally.
+
+### Prerequisites
+
+- Git
+- Node.js
+- npm
+- Python
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/zodakzach/youtube-history-metrics.git
+```
+
+1. Navigate to the backend directory:
+```bash
+cd backend
+```
+
+2. Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Navigate to the frontend directory:
+```bash
+cd ../frontend
+```
+
+4. Install Node.js dependencies:
+```bash
+npm install
+```
+
+5. Start the server:
+```bash
+npm start
+```
+
+6. Navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000) in your web browser.
