@@ -10,7 +10,7 @@ Experience the simplicity and convenience of YouTube Watch History Metrics today
 
 ## Description
 
-This is a straightforward Python FastAPI web application that uses Jinja2 templates for rendering. The application utilizes HTMX to facilitate AJAX requests to the backend, enabling seamless swapping of HTML templates without full-page reloads. Styling is accomplished with Tailwind CSS, employing the DaisyUI plugin for enhanced design capabilities.
+This is a straightforward Python [FastAPI](https://fastapi.tiangolo.com) web application that uses Jinja2 templates for rendering. The application utilizes [HTMX](https://htmx.org) to facilitate AJAX requests to the backend, enabling seamless swapping of HTML templates without full-page reloads. Styling is accomplished with [Tailwind CSS](https://tailwindcss.com), employing the [DaisyUI](https://daisyui.com) plugin for enhanced design capabilities.
 
 ## Getting Started
 
@@ -18,10 +18,10 @@ Follow these instructions to set up and run the project locally.
 
 ### Prerequisites
 
-- Git
-- Node.js
-- npm
-- Python
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/en)
+- [npm](https://www.npmjs.com)
+- [Python](https://www.python.org)
 
 ### Installation
 
