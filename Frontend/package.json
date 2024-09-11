@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "concurrently \"npm run build\" \"cd ../Backend && uvicorn src.main:app\"",
+    "start": "npm run build && cd ../Backend && uvicorn src.main:app",
     "dev": "concurrently \"npm run watch-css\" \"npm run build\" \"cd ../Backend && uvicorn src.main:app --reload\"",
     "build": "rollup --config && npm run build-css",
     "build-css": "postcss --config tailwindcss/postcss.config.js tailwindcss/styles/styles.css -o static/css/app.css",
