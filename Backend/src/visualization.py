@@ -4,11 +4,6 @@ import pandas as pd
 
 
 def plot_time_series_line_chart(youtube_df):
-    # Convert "watch_date" column to datetime format with multiple potential formats
-    youtube_df["watch_date"] = youtube_df["watch_date"].apply(
-        data_processing.parse_timestamp
-    )
-
     # Sort the DataFrame by watch date
     youtube_df = youtube_df.sort_values(by="watch_date")
 

@@ -4,7 +4,7 @@
 >
   <div class="mb-5 mt-5 flex w-3/4 justify-start text-2xl"></div>
   <div class="flex h-1/2 w-5/6 items-start">
-    <div class="rounded-box h-full w-1/2 shadow-xl">
+    <div class="rounded-box h-full w-1/2 shadow-xl overflow-hidden">
       <div class="h-5/6 w-full overflow-x-auto">
         <table class="table-zebra table min-h-full min-w-full">
           <!-- head -->
@@ -31,7 +31,7 @@
           id="prev_button"
           class="join-item btn"
           disabled="disabled"
-          hx-get="{{ url_for('prev_table_page') }}"
+          hx-post="{{ url_for('prev_table_page') }}"
           hx-target="#table_body"
           hx-swap="outerHTML"
           hx-on::after-request="decrementPage()"
@@ -44,7 +44,7 @@
         <button
           id="next_button"
           class="join-item btn"
-          hx-get="{{ url_for('next_table_page') }}"
+          hx-post="{{ url_for('next_table_page') }}"
           hx-target="#table_body"
           hx-swap="outerHTML"
           hx-on::after-request="incrementPage()"

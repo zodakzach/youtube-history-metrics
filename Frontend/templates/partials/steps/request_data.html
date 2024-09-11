@@ -12,12 +12,11 @@
   <ul
     class="steps mt-12 text-xl"
     id="steps"
-    hx-get="{{ url_for('load_analytics') }}"
+    hx-post="{{ url_for('status') }}"
     hx-target="#contents_div"
     hx-swap="outerHTML"
-    hx-trigger="load"
-    hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success'),
-    htmx.addClass(htmx.find('#loading_spinner'), 'hidden')"
+    hx-trigger="every 2s"
+    hx-on::after-settle="htmx.addClass(htmx.find('#step_3'), 'step-success')"
   >
     <li class="step step-success mx-10" id="step_1">Verifying & Extracting</li>
     <li class="step step-success" id="step_2">Requesting Video Data</li>
