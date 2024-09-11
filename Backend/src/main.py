@@ -212,7 +212,7 @@ async def status(request: Request):
                 "partials/steps/request_data.html", context={"request": request}
             )
         else:
-            if len(data_store.state_queue) >1:
+            if len(data_store.state_queue) > 1:
                 data_store.process_next_state()
                 await asyncio.to_thread(save_data_store, session_id, data_store)  # Run in thread
             return templates.TemplateResponse(

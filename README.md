@@ -8,6 +8,15 @@ Once the analysis is complete, you'll be presented with a clear and concise dash
 
 Experience the simplicity and convenience of YouTube Watch History Metrics today and gain valuable insights into your YouTube viewing behavior like never before. Start exploring your watch history with YouTube Watch History Metrics now!
 
+<div style="display: flex; justify-content: space-between;">
+
+  <img src="frontend/static/images/pic1.png" alt="Image 1" width="500" height="300">
+  
+  <img src="frontend/static/images/pic2.png" alt="Image 2" width="500" height="300">
+
+</div>
+
+
 ## Description
 
 This is a straightforward Python [FastAPI](https://fastapi.tiangolo.com) web application that uses Jinja2 templates for rendering. The application utilizes [HTMX](https://htmx.org) to facilitate AJAX requests to the backend, enabling seamless swapping of HTML templates without full-page reloads. Styling is accomplished with [Tailwind CSS](https://tailwindcss.com), employing the [DaisyUI](https://daisyui.com) plugin for enhanced design capabilities.
