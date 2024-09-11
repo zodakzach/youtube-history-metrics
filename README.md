@@ -8,13 +8,13 @@ Once the analysis is complete, you'll be presented with a clear and concise dash
 
 Experience the simplicity and convenience of YouTube Watch History Metrics today and gain valuable insights into your YouTube viewing behavior like never before. Start exploring your watch history with YouTube Watch History Metrics now!
 
-<div style="display: flex; justify-content: space-between;">
+<p align="center">
 
   <img src="Frontend/static/images/pic1.png" alt="Image 1" width="300" height="200">
   
   <img src="Frontend/static/images/pic2.png" alt="Image 2" width="300" height="200">
 
-</div>
+</p>
 
 
 ## Description
