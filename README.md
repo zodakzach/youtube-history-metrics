@@ -31,6 +31,7 @@ Follow these instructions to set up and run the project locally.
 - [Node.js](https://nodejs.org/en)
 - [npm](https://www.npmjs.com)
 - [Python](https://www.python.org)
+- [Redis](https://redis.io)
 
 ### Installation
 
