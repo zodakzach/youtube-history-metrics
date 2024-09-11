@@ -10,9 +10,9 @@ Experience the simplicity and convenience of YouTube Watch History Metrics today
 
 <div style="display: flex; justify-content: space-between;">
 
-  <img src="Frontend/static/images/pic1.png" alt="Image 1" width="500" height="300">
+  <img src="Frontend/static/images/pic1.png" alt="Image 1" width="300" height="200">
   
-  <img src="Frontend/static/images/pic2.png" alt="Image 2" width="500" height="300">
+  <img src="Frontend/static/images/pic2.png" alt="Image 2" width="300" height="200">
 
 </div>
 
