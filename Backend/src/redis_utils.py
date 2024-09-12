@@ -1,10 +1,18 @@
 import redis
 import json
 from typing import Optional
+from dotenv import load_dotenv  # Import load_dotenv to load .env file
+import os
 from .data_store import DataStore
 
-# Initialize Redis connection
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
+# Load environment variables from .env file
+load_dotenv()
+
+# Get Redis host and port from environment variables
+redis_host = os.getenv("REDIS_HOST", "localhost")  # Default to 'localhost' if not found
+redis_port = int(os.getenv("REDIS_PORT", 6379))    # Default to 6379 if not found
+
+redis_client = redis.Redis(host=redis_host, port=redis_port, db=0)
 
 
 def save_data_store(session_id: str, data_store: DataStore, expire: int = 3600):

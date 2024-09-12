@@ -198,6 +198,8 @@ async def status(request: Request):
 
     current_state = data_store.current_state()
 
+    print(current_state)
+
     if data_store.error_message == "":
         if current_state == DataStoreState.COMPLETE:
             data_store.process_next_state()
@@ -205,7 +207,7 @@ async def status(request: Request):
             context = await generate_analytics_context(session_id)
             context["request"] = request
             return templates.TemplateResponse("partials/analytics.html", context)
-        elif current_state == DataStoreState.GENERATING_ANALYTICS:
+        elif current_state == DataStoreState.GENERATING_ANALYTICS and len(data_store.state_queue) == 2:
             data_store.process_next_state()
             await asyncio.to_thread(save_data_store, session_id, data_store)  # Run in thread
             return templates.TemplateResponse(
@@ -218,7 +220,7 @@ async def status(request: Request):
             return templates.TemplateResponse(
                 "partials/steps/verify_and_extract.html", context={"request": request}
             )
-
+        
     return templates.TemplateResponse(
         "partials/steps/request_data.html",
         context={"request": request, "error": data_store.error_message},
