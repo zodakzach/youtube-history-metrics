@@ -31,7 +31,17 @@ Follow these instructions to set up and run the project locally.
 - [Node.js](https://nodejs.org/en)
 - [npm](https://www.npmjs.com)
 - [Python](https://www.python.org)
-- [Redis](https://redis.io)
+- [Upstash Redis account](https://upstash.com) (or a locally running Redis instance for fallback testing)
+
+### Environment configuration
+
+Create a `.env` file in the repo root (or export the variables in your shell) and provide the secure URL that Upstash generates for your database:
+
+```bash
+UPSTASH_REDIS_URL=rediss://default:<token>@<host>:<port>
+```
+
+When `UPSTASH_REDIS_URL` is set the backend connects to Upstash via TLS automatically. If you omit it, the app falls back to the legacy `REDIS_HOST` / `REDIS_PORT` variables so you can still run against a local Redis server.
 
 ### Installation
 

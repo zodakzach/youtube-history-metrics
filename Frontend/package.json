@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npm run build && cd ../Backend && uvicorn src.main:app",
-    "dev": "concurrently \"npm run watch-css\" \"npm run build\" \"cd ../Backend && uvicorn src.main:app --reload\"",
-    "build": "rollup --config && npm run build-css",
+    "start": "pnpm run build && cd ../Backend && uv run uvicorn src.main:app",
+    "dev": "concurrently \"pnpm run watch-css\" \"pnpm run build\" \"cd ../Backend && uv run uvicorn src.main:app --reload\"",
+    "build": "rollup --config && pnpm run build-css",
     "build-css": "postcss --config tailwindcss/postcss.config.js tailwindcss/styles/styles.css -o static/css/app.css",
     "watch-css": "postcss --config tailwindcss/postcss.config.js tailwindcss/styles/styles.css -o static/css/app.css --watch",
     "format": "prettier --write **/*.html"

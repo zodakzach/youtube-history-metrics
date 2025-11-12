@@ -37,6 +37,7 @@ async def fetch_video_data(youtube_api_key, video_id_string):
             }
             for item in data
         ]
+        print(extracted_data)
 
         return extracted_data
 

@@ -42,10 +42,12 @@ class DataStore:
             "unique_vids": self.unique_vids,
             "num_of_pages": self.num_of_pages,
             "max_rows": self.max_rows,
-            "state_queue": [state.value for state in self.state_queue],  # Serialize state queue
+            "state_queue": [
+                state.value for state in self.state_queue
+            ],  # Serialize state queue
             "error_message": self.error_message,  # Include error_message in the dictionary
         }
-    
+
     def update_state(self, new_state: DataStoreState):
         """Update the state and add it to the state queue."""
         self.state_queue.append(new_state)

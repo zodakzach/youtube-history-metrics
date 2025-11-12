@@ -7,7 +7,6 @@ from copy import deepcopy
 
 
 class TestDataStoreSerialization(unittest.TestCase):
-
     def setUp(self):
         # Create a sample DataFrame for complete_data with the specified columns and example data
         self.sample_data = pd.DataFrame(
