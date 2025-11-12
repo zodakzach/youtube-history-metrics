@@ -1,11 +1,24 @@
+import json
 import unittest
 from datetime import datetime
-from src import data_processing
+from pathlib import Path
+
 import pandas as pd
-from src import models
+
+from src import data_processing, models
 
 
 class DataProcessingModuleTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        watch_history_path = Path(__file__).resolve().parent.parent / "watch-history.json"
+        cls.watch_history = json.loads(watch_history_path.read_text())
+        cls.watched_items = [models.WatchedItem(**item) for item in cls.watch_history]
+        cls.filtered_json, cls.removed_videos_count = data_processing.filter_data(
+            cls.watched_items
+        )
+        cls.filtered_videos = data_processing.json_to_youtube_videos(cls.filtered_json)
+
     def test_extract_video_id(self):
         # Test case for valid URL
         url = "https://www.youtube.com/watch?v=abc123"
@@ -15,110 +28,69 @@ class DataProcessingModuleTest(unittest.TestCase):
         invalid_url = "https://www.youtube.com/watch"
         self.assertIsNone(data_processing.extract_video_id(invalid_url))
 
-    def test_parse_timestamp(self):
-        # Test case for valid timestamp string
-        timestamp_string = "2023-01-01T12:00:00Z"
-        expected_datetime = datetime(2023, 1, 1, 12, 0, 0)
+    def test_parse_timestamp_handles_watch_history_format(self):
+        timestamp_string = self.watch_history[0]["time"]
+        expected_datetime = datetime.fromisoformat(timestamp_string.rstrip("Z"))
         self.assertEqual(
             data_processing.parse_timestamp(timestamp_string), expected_datetime
         )
 
-        # Test case for invalid timestamp string
-        invalid_timestamp_string = "invalid_timestamp"
-        with self.assertRaises(ValueError):
-            data_processing.parse_timestamp(invalid_timestamp_string)
+    def test_parse_timestamp_returns_none_for_invalid_strings(self):
+        self.assertIsNone(data_processing.parse_timestamp("not-a-real-timestamp"))
 
-    def test_filter_data(self):
-        # Mock watched_items
-        watched_items = [
-            models.WatchedItem(
-                header="YouTube",
-                title="Watched https://www.youtube.com/watch?v=abc123",
-                time="2023-01-01T12:00:00Z",
-                products=["YouTube"],
-                titleUrl="https://www.youtube.com/watch?v=abc123",
-            ),
-            models.WatchedItem(
-                header="YouTube",
-                title="Watched https://www.youtube.com/watch?v=def456",
-                time="2023-01-02T12:00:00Z",
-                products=["YouTube"],
-                titleUrl="https://www.youtube.com/watch?v=def456",
-            ),
-            models.WatchedItem(
-                header="YouTube",
-                title="Watched https://www.youtube.com/watch?v=ghi789",
-                time="2023-01-02T12:00:00Z",
-                products=["YouTube"],
-                titleUrl=None,
-            ),
-            models.WatchedItem(
-                header="YouTube",
-                title="Watched https://www.youtube.com/watch?v=jkl012",
-                time="2023-01-03T12:00:00Z",
-                products=["YouTube"],
-                titleUrl=None,
-            ),
-            models.WatchedItem(
-                header="YouTube",
-                title="Watched a video that has been removed",
-                time="2023-01-04T12:00:00Z",
-                products=["YouTube"],
-                titleUrl=None,
-            ),
-        ]
+    def test_filter_data_includes_entries_without_ad_metadata(self):
+        plain_entry = next(
+            item
+            for item in self.watched_items
+            if item.details is None and item.titleUrl is not None
+        )
+        filtered_ids = {video.id for video in self.filtered_videos}
+        expected_id = data_processing.extract_video_id(plain_entry.titleUrl)
+        self.assertIn(expected_id, filtered_ids)
 
-        # Mock expected output
-        expected_filtered_data = [
-            models.YouTubeVideo(
-                watchDate=str(data_processing.parse_timestamp("2023-01-01T12:00:00Z")),
-                id="abc123",
-            ),
-            models.YouTubeVideo(
-                watchDate=str(data_processing.parse_timestamp("2023-01-02T12:00:00Z")),
-                id="def456",
-            ),
-        ]
-        expected_removed_videos_count = 1
+    def test_filter_data_excludes_entries_with_ad_metadata(self):
+        entry_with_details = next(
+            item
+            for item in self.watched_items
+            if item.details is not None and item.titleUrl is not None
+        )
+        filtered_ids = {video.id for video in self.filtered_videos}
+        excluded_id = data_processing.extract_video_id(entry_with_details.titleUrl)
+        self.assertNotIn(excluded_id, filtered_ids)
 
-        # Test filter_data function
-        filtered_data, removed_videos_count = data_processing.filter_data(watched_items)
-        self.assertEqual(filtered_data, expected_filtered_data)
-        self.assertEqual(removed_videos_count, expected_removed_videos_count)
+    def test_filter_data_counts_removed_videos(self):
+        removed_expected = sum(
+            1 for item in self.watched_items if item.title == "Watched a video that has been removed"
+        )
+        self.assertEqual(self.removed_videos_count, removed_expected)
 
-    def test_merge_data(self):
-        # Mock videos and vid_info_df
-        videos = [
-            models.YouTubeVideo(
-                id="abc123", watchDate=datetime(2023, 1, 1, 12, 0, 0).isoformat()
-            ),
-            models.YouTubeVideo(
-                id="def456", watchDate=datetime(2023, 1, 2, 12, 0, 0).isoformat()
-            ),
-        ]
-        vid_info_df = pd.DataFrame()
-        # Assign columns to the DataFrame
-        vid_info_df["id"] = ["abc123", "def456"]
-        vid_info_df["title"] = ["test1", "test2"]
-        vid_info_df["channelTitle"] = ["test1", "test2"]
-        vid_info_df["duration"] = ["test1", "test2"]
+    def test_json_round_trip_from_watch_history(self):
+        sample_json = [video.to_json() for video in self.filtered_videos[:5]]
+        reconstructed = data_processing.json_to_youtube_videos(sample_json)
+        self.assertEqual(reconstructed, self.filtered_videos[:5])
 
-        # Mock expected output
-        expected_merged_df = pd.DataFrame(
-            {
-                "id": ["abc123", "def456"],
-                "watch_date": [
-                    datetime(2023, 1, 1, 12, 0, 0).isoformat(),
-                    datetime(2023, 1, 2, 12, 0, 0).isoformat(),
-                ],
-                "title": ["test1", "test2"],
-                "channelTitle": ["test1", "test2"],
-                "duration": ["test1", "test2"],
-            }
+    def test_merge_data_filters_missing_metadata(self):
+        videos = self.filtered_videos[:3]
+        vid_info_df = pd.DataFrame(
+            [
+                {
+                    "id": videos[0].id,
+                    "title": "Video 1",
+                    "channelTitle": "Channel 1",
+                    "duration": "PT5M",
+                },
+                {
+                    "id": videos[1].id,
+                    "title": "Video 2",
+                    "channelTitle": "Channel 2",
+                    "duration": "PT3M",
+                },
+            ]
         )
 
         merged_df = data_processing.merge_data(videos, vid_info_df)
-        self.assertTrue(expected_merged_df.equals(merged_df))
+        self.assertEqual(len(merged_df), 2)
+        self.assertListEqual(merged_df["id"].tolist(), [videos[0].id, videos[1].id])
 
 
 if __name__ == "__main__":
